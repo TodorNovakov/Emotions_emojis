@@ -6,6 +6,7 @@ import re
 CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 DATA_PATH_TWEETS = CURRENT_DIR_PATH + '/annotated data/merged_tweets.csv'
+DATA_PATH_CLEANED_TWEETS = CURRENT_DIR_PATH + '/annotated data/tweets.text.cleaned.txt'
 
 def clean_text(text):
     # remove emojis, remove links, anonymize user mentions
@@ -68,4 +69,12 @@ def get_emojis():
     out_emojis_name.close()
     out_emojis_code.close()
 
-get_emojis()
+def label_cleaned_text():
+    tweets = pandas.read_csv(DATA_PATH_TWEETS, header=None, names=['tweet', 'label'])
+    cleaned_tweets = pandas.read_csv(DATA_PATH_CLEANED_TWEETS, header=None, names=['tweet'])
+
+    cleaned_tweets['label'] = tweets['label']
+
+    cleaned_tweets.to_csv('./annotated data/cleaned_annotated_tweets.csv', encoding='utf-8', index=False, header=False)
+
+label_cleaned_text()
